@@ -8,40 +8,22 @@ import {
   View,
 } from "react-native";
 import { styles } from "./styles";
+
 import Participant from "../Participant";
+import { useState } from "react";
 
 export default function Home() {
-  const participants = [
-    "Ana",
-    "Bruno",
-    "Carla",
-    "Diego",
-    "Fernanda",
-    "Gustavo",
-    "Helena",
-    "Igor",
-    "Juliana",
-    "Lucas",
-    "Mariana",
-    "Pedro",
-    "Sofia",
-    "Thiago",
-    "Clara",
-    "Rafael",
-    "Isabela",
-    "Felipe",
-    "Laura",
-    "André",
-  ];
+  const [participants, setParticipants] = useState(["Ana"]);
 
   function handleAddParticipant() {
-    if (participants.includes("Ana")) {
+    if (participants.includes("Rodrigo")) {
       return Alert.alert(
         "Participante já existe",
         "Já existe um participante na lista com esse nome"
       );
     }
-    console.log("Você clicou no botão Adicionar");
+    setParticipants([...participants, "Rodrigo"]);
+    console.log("Você adicionou um participante");
   }
 
   function handleRemoveParticipant(name: string) {
