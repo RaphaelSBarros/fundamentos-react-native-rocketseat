@@ -1,7 +1,6 @@
 import {
   Alert,
   FlatList,
-  ScrollView,
   Text,
   TextInput,
   TouchableOpacity,
@@ -13,17 +12,18 @@ import Participant from "../Participant";
 import { useState } from "react";
 
 export default function Home() {
-  const [participants, setParticipants] = useState(["Ana"]);
+  const [participants, setParticipants] = useState<String[]>([]);
+  const [participantName, setParticipantName] = useState("");
 
-  function handleAddParticipant() {
-    if (participants.includes("Rodrigo")) {
+  function handleAddParticipant(name: string) {
+    if (participants.includes(name)) {
       return Alert.alert(
         "Participante já existe",
         "Já existe um participante na lista com esse nome"
       );
     }
-    setParticipants([...participants, "Rodrigo"]);
-    console.log("Você adicionou um participante");
+    setParticipants([...participants, name]);
+    setParticipantName("");
   }
 
   function handleRemoveParticipant(name: string) {
@@ -33,7 +33,6 @@ export default function Home() {
       [
         {
           text: "Sim",
-          style: "destructive",
           onPress: () => Alert.alert("Deletado!"),
         },
         {
@@ -42,8 +41,6 @@ export default function Home() {
         },
       ]
     );
-
-    console.log(`Você clicou em remover ${name}`);
   }
 
   return (
@@ -57,15 +54,26 @@ export default function Home() {
           style={styles.input}
           placeholder="Nome do partiipante"
           placeholderTextColor="#6B6B6B"
+          value={participantName}
+          onChangeText={setParticipantName}
         />
 
-        <TouchableOpacity style={styles.button} onPress={handleAddParticipant}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => handleAddParticipant(participantName)}
+        >
           <Text style={styles.buttonText}>+</Text>
         </TouchableOpacity>
       </View>
 
       <FlatList
         data={participants}
+        ListEmptyComponent={() => (
+          <Text style={styles.listEmptyText}>
+            Ninguém chegou no evento ainda? Adicione participantes a sua lista
+            de presença
+          </Text>
+        )}
         keyExtractor={(item) => item}
         renderItem={({ item }) => (
           <Participant
@@ -75,12 +83,6 @@ export default function Home() {
           />
         )}
         showsVerticalScrollIndicator={false}
-        ListEmptyComponent={() => (
-          <Text style={styles.listEmptyText}>
-            Ninguém chegou no evento ainda? Adicione participantes a sua lista
-            de presença
-          </Text>
-        )}
       />
     </View>
   );
