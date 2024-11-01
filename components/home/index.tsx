@@ -33,7 +33,10 @@ export default function Home() {
       [
         {
           text: "Sim",
-          onPress: () => Alert.alert("Deletado!"),
+          onPress: () =>
+            setParticipants(
+              participants.filter((participant) => participant !== name)
+            ),
         },
         {
           text: "Não",
